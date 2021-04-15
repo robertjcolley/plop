@@ -1,0 +1,25 @@
+import {Dimensions} from 'react-native';
+import theme, {styles} from '../../../theme';
+import {DynamicStyleSheet} from 'react-native-dark-mode';
+const size = Dimensions.get('screen').width;
+
+const dynamicStyles = new DynamicStyleSheet({
+  container: {
+    flex: 1,
+    backgroundColor: theme.dynamic.background,
+  },
+  headerContainer: styles.headerContainer,
+  text: {
+    color: theme.dynamic.text,
+  },
+  backIcon: {
+    color: theme.dynamic.text,
+  },
+  // uploadIcon: {
+  //   color: theme.dark.text,
+  //   fontWeight: 'bold',
+  //   fontSize: 30,
+  // },
+});
+
+export default dynamicStyles;

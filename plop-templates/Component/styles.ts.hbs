@@ -1,0 +1,24 @@
+import {DynamicStyleSheet} from 'react-native-dark-mode';
+import theme from '../../theme';
+
+const dynamicStyles = new DynamicStyleSheet({
+  container: {
+    flex: 1,
+    backgroundColor: theme.dynamic.background,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loading: {
+    backgroundColor: theme.dynamic.background,
+  },
+  text: {},
+  error: {
+    backgroundColor: theme.dynamic.background,
+  },
+  errorText: {
+    backgroundColor: theme.dynamic.text,
+  },
+});
+
+export default dynamicStyles;

@@ -1,0 +1,25 @@
+import React, {Component, createContext, useContext} from 'react';
+
+export interface {{pascalCase name}}ContextInterface {}
+interface {{pascalCase name}}ContextState {}
+
+/**
+ *  This context provides higher level acess to ...
+ *  TODO: description
+ */
+// @ts-ignore default value does not make sense here
+export const {{pascalCase name}}Context = createContext<{{pascalCase name}}ContextInterface>();
+export const use{{pascalCase name}}Context: () => {{pascalCase name}}ContextInterface = () => useContext({{pascalCase name}}Context);
+
+export default class {{pascalCase name}}ContextProvider extends Component {
+  state: {{pascalCase name}}ContextState = {};
+
+  render() {
+    const providedState = {};
+    return (
+      <{{pascalCase name}}Context.Provider value={providedState}>
+        {this.props.children}
+      </{{pascalCase name}}Context.Provider>
+    );
+  }
+}

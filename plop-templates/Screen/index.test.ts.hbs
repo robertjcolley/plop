@@ -1,0 +1,12 @@
+import Component from './index';
+jest.mock('./index');
+
+beforeEach(() => {
+  // @ts-ignore Clear all instances and calls to constructor and all methods:
+  Component.mockClear();
+});
+
+it('Called constructor', () => {
+  Component();
+  expect(Component).toHaveBeenCalledTimes(1);
+});

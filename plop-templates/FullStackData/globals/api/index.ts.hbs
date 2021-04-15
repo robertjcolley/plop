@@ -1,0 +1,47 @@
+import { EndpointConstructorPayload, User } from "..";
+import { StatusCodes } from "http-status-codes";
+import { Endpoint } from "../endpoint";
+import { {{pascalCase name}} } from "../../model/{{lowerCase name}}";
+
+export class {{pascalCase name}}API extends Endpoint {
+  constructor(payload: EndpointConstructorPayload) {
+    super(payload);
+  }
+
+  async get{{pascalCase name}}(uid: string, user: User) {
+    const response = await super.fetchWrapper({
+      resourceUrl: `/${this.modulePath}/{{lowerCase name}}/${uid}`,
+      user,
+    });
+    if (response.status >= StatusCodes.BAD_REQUEST)
+      throw new Error(`Error ${this.modulePath} ${response.status}`);
+    const data = await response.json();
+    return data as {{pascalCase name}};
+  }
+
+  async get{{pascalCase name}}s(user: User) {
+    const response = await super.fetchWrapper({
+      resourceUrl: `/${this.modulePath}/`,
+      user,
+    });
+    if (response.status >= StatusCodes.BAD_REQUEST)
+      throw new Error(`Error ${this.modulePath} ${response.status}`);
+    const data = await response.json();
+    return data as {{pascalCase name}};
+  }
+
+  async update{{pascalCase name}}(uid: string, payload: any, user: User) {
+    const body = JSON.stringify(payload);
+    const response = await super.fetchWrapper({
+      resourceUrl: `/${this.modulePath}/${uid}`,
+      payload: {
+        method: "POST",
+        body,
+        headers: { "Content-Type": "application/json" },
+      },
+      user,
+    });
+    if (response.status >= StatusCodes.BAD_REQUEST)
+      throw new Error("Error updating {{pascalCase name}} " + uid);
+  }
+}

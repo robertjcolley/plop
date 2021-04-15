@@ -1,0 +1,14 @@
+import DynamoDBInstance from '../../singletons/dynamodb'
+import {v4 as uuidv4} from 'uuid';
+
+import {
+  attribute,
+  hashKey,
+  rangeKey,
+  table,
+} from '@aws/dynamodb-data-mapper-annotations';
+
+@table(DynamoDBInstance.tableNames.{{constantCase name}}S)
+export class {{pascalCase name}} {
+{{toDynamoDBAttributes attributes}}
+}

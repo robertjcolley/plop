@@ -1,0 +1,74 @@
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  Image,
+  Alert,
+  SafeAreaView,
+  ActivityIndicator,
+  Dimensions,
+} from 'react-native';
+import {Header, Input, Icon, Overlay} from 'react-native-elements';
+import HeaderCenterComponent from '../../../components/HeaderCenterComponent';
+import dynamicStyles from './styles';
+import theme from '../../../theme';
+import {useNavigation} from '@react-navigation/native';
+import {useDynamicStyleSheet, useDarkMode} from 'react-native-dark-mode';
+import { useLocalization } from '../../contexts/LocalizationContext';
+
+/**
+ * {{pascalCase name}} Screen
+ */
+export default function {{pascalCase name}}() {
+  // const [data, setData] = useState(null);
+  // const {t} = useLocalization();
+  const [error, setError] = useState<null | Error>(null);
+  const navigation = useNavigation();
+  const styles = useDynamicStyleSheet(dynamicStyles);
+
+  /**
+   * Event handler for a back button press
+   */
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Header
+        placement='center'
+        style={styles.headerContainer}
+        centerComponent={
+          <HeaderCenterComponent alignItems='center' title={'{{pascalCase name}}'} />
+        }
+        // TODO: Make these icons a different component
+        leftComponent={
+          <Icon
+            name='chevron-left'
+            size={32}
+            onPress={handleBackPress}
+            iconStyle={styles.backIcon}
+            underlayColor={theme.dynamic.clear}
+          />
+        }
+        // TODO: Make these icons a different component
+        // rightComponent={
+        //   <Icon
+        //     raised
+        //     reverse
+        //     size={16}
+        //     name='publish'
+        //     iconStyle={styles.uploadIcon}
+        //     color={theme.colors.primary}
+        //     underlayColor={theme.dynamic.clear}
+        //   />
+        // }
+        containerStyle={styles.headerContainer}
+      />
+      <View style={styles.content}>
+        { /* Content of screen here */ }
+      </View>
+    </SafeAreaView>
+  );
+}

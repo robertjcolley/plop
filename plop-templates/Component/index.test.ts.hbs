@@ -1,0 +1,93 @@
+import React from 'react';
+import TestComponent from './index';
+import {render, fireEvent, waitFor} from 'react-native-testing-library';
+import {expect, it} from '@jest/globals';
+import {useNavigation} from '@react-navigation/native';
+import {useUserContext} from '../../contexts/UserContext';
+import {useLocalization} from '../../contexts/LocalizationContext';
+import {useAudioPlayerContext} from '../../contexts/AudioPlayerContext';
+
+// mock the navigator
+// jest.mock('@react-navigation/native', () => {
+//   return {
+//     createNavigatorFactory: jest.fn(),
+//     useNavigation: jest.fn(),
+//   };
+// });
+
+// jest.mock('@react-navigation/stack', () => ({
+//   createStackNavigator: jest.fn(),
+// }));
+
+// mock the localization context
+// jest.mock('../../contexts/LocalizationContext', () => {
+//   return {
+//     useLocalization: jest.fn(),
+//   };
+// });
+
+// mock the user context
+// jest.mock('../../contexts/UserContext', () => {
+//   return {
+//     useUserContext: jest.fn(),
+//   };
+// });
+
+// mock the audio player context
+// jest.mock('../../contexts/AudioPlayerContext', () => {
+//   return {
+//     useAudioPlayerContext: jest.fn(),
+//   };
+// });
+
+// beforeEach(() => {
+//   // @ts-ignore
+//   useNavigation.mockReset();
+// });
+
+// ============================================================================
+
+it('renders correctly', () => {
+  // @ts-ignore
+  useLocalization.mockImplementation(() => ({t: () => 'Log out'}));
+  // Render
+  const component = render(<TestComponent />);
+  expect(component).toBeDefined();
+  expect(component.getByText(/Log out/i)).toBeDefined();
+});
+
+// ============================================================================
+
+it('button press logs the user out, resets the localization to the best for the phone, and navigates to auth screen', async () => {
+  const mockNavigate = jest.fn();
+  const mockOverrideLocalization = jest.fn();
+  const mockPause = jest.fn();
+  const mockSignOut = jest.fn(() => Promise.resolve());
+  // @ts-ignore
+  useNavigation.mockImplementation(() => ({navigate: mockNavigate}));
+  // @ts-ignore
+  useLocalization.mockImplementation(() => ({overrideLocalization: mockOverrideLocalization, t: () => 'Log out'}));
+  // @ts-ignore
+  useUserContext.mockImplementation(() => ({signOut: mockSignOut}));
+  // @ts-ignore
+  useAudioPlayerContext.mockImplementation(() => ({pause: mockPause}));
+
+  // render component
+  const {getByText} = render(<TestComponent />);
+  const button = getByText(/Log out/i);
+
+  // press button
+  fireEvent.press(button);
+
+  // sign out called
+  await waitFor(() => expect(mockSignOut).toHaveBeenCalledTimes(1));
+  expect(mockSignOut).toHaveBeenCalledTimes(1);
+
+  // overrideLocalization called
+  await waitFor(() => expect(mockOverrideLocalization).toHaveBeenCalledTimes(1));
+  expect(mockOverrideLocalization).toHaveBeenCalledTimes(1);
+
+  // navigate to Auth screen
+  await waitFor(() => expect(mockNavigate).toHaveBeenCalledTimes(1));
+  expect(mockNavigate).toHaveBeenCalledWith('Auth');
+});

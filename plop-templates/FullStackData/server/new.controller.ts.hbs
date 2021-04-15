@@ -1,0 +1,38 @@
+import { Controller, Get, Res, Param, Post } from '@nestjs/common';
+import { {{pascalCase name}}Service } from './{{lowerCase name}}.service';
+import { Response } from 'express';
+import { handleCommonErrors } from '../../utils/handleDynamoDBErrors';
+import { {{pascalCase name}} } from './{{lowerCase name}}.dynamodb';
+
+@Controller('{{lowerCase name}}s')
+export class {{pascalCase name}}Controller {
+  constructor(private readonly {{lowerCase name}}Service: {{pascalCase name}}Service) {}
+
+  @Get()
+  async getAll{{pascalCase name}}s(@Res() response: Response) {
+    try {
+      const data = await this.{{lowerCase name}}Service.getAll({{pascalCase name}});
+      response.send(data);
+    } catch (error) {
+      response.sendStatus(handleCommonErrors(error))
+    }
+  }
+
+  @Get('{{lowerCase name}}/:id')
+  async get{{pascalCase name}}ById(@Param() param, @Res() response: Response) {
+    try {
+      const data = await this.{{lowerCase name}}Service.getOne({{pascalCase name}}, {uid: param.id});
+      response.send(data);
+    } catch (error) {
+      response.sendStatus(handleCommonErrors(error))
+    }
+  }
+
+  @Post(':id')
+  update{{pascalCase name}}(@Param() param, @Body() body, @Res() response: Response) {
+    this.{{lowerCase name}}Service
+      .update{{pascalCase name}}(param.id, body)
+      .then(data => response.send(data))
+      .catch(error => response.sendStatus(handleCommonErrors(error)));
+  }
+}

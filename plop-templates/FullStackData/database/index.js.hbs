@@ -1,0 +1,39 @@
+const TableName = `nextstep-health-${process.env.NEXTSTEP_ENV}-{{lowerCase name}}s`
+const csvFilePath='./scripts/{{lowerCase name}}/data.csv';
+const csv=require('csvtojson')
+
+module.exports = {
+  create{{pascalCase name}}sTable: function (dynamodb, docClient, createTableCallback, putCallback) {
+    csv()
+    .fromFile(csvFilePath)
+    .then((data) => {
+      const params = {
+        TableName,
+        KeySchema: [
+          {AttributeName: 'uid', KeyType: 'HASH'},
+        ],
+        AttributeDefinitions: [
+          {AttributeName: 'uid', AttributeType: 'S'},
+        ],
+        BillingMode: "PAY_PER_REQUEST",
+ProvisionedThroughput: {
+          ReadCapacityUnits: 0,
+          WriteCapacityUnits: 0
+        }
+      };
+      
+    dynamodb.createTable(params, createTableCallback)
+      .onAsync('complete', async () => {
+        const KeySchema = [{AttributeName: "uid", KeyType: "S"}]
+        const AttributeDefinitions = [{AttributeName: "uid", AttributeType: "S"}]
+
+        for(let Item of data){
+          const newData = {TableName, KeySchema, AttributeDefinitions, Item}
+          docClient.put(newData, putCallback).on('error', () => console.log(newData))
+        }
+      }).on('error', () => {
+        console.error('failed to create table')
+      })
+    })
+  }
+} 

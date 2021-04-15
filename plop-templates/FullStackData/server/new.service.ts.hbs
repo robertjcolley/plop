@@ -1,0 +1,16 @@
+import { Injectable } from '@nestjs/common';
+import DynamoDBInstance from '../../singletons/dynamodb';
+import { CRUDService } from 'src/services/crud.service';
+import { {{pascalCase name}} } from './{{lowerCase name}}.dynamodb';
+
+@Injectable()
+export class {{pascalCase name}}Service extends CRUDService {
+
+  async update{{pascalCase name}}(uid: string, payload: any) {
+    const toUpdate = await this.get({{pascalCase name}}, {uid});
+    for (const attr of Object.keys(payload)) {
+      toUpdate[attr] = payload[attr];
+    }
+    DynamoDBInstance.mapper.update(toUpdate);
+  }
+}

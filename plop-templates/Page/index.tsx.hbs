@@ -1,0 +1,47 @@
+import React, {useState, useEffect} from 'react';
+import {Box, Typography, Container} from '@material-ui/core';
+import {useStyles} from '../../page-styles/{{lowerCase name}}/styles'
+import {useLocalization} from '../../contexts/LocalizationContext'
+// import { GetServerSidePropsContext } from 'next';
+// import API from '../../api';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import withUser, { NextStepHealthPageProps } from '../../hoc/withUser';
+import UserContextProvider from '../../contexts/UserContext';
+import { GetServerSidePropsContext } from 'next';
+
+/**
+ * {{pascalCase name}}
+ */
+export default function {{pascalCase name}}({user}: NextStepHealthPageProps) {
+  const classes = useStyles();
+  const {t} = useLocalization();
+
+  // const [loading, setLoading] = useState(false);
+  // useEffect(() => {}, [])
+  // const handleEvent = () => console.log(`Why don't YOU handle me ;)`)
+
+  return (
+    <UserContextProvider user={user}>
+      <Box className={classes.root}>
+        <Header />
+        <Container maxWidth='lg'>
+          <Typography variant='h2'>{t("{{pascalCase name}}")}</Typography>
+        </Container>
+        <Footer />
+      </Box>
+    </UserContextProvider>
+  );
+}
+
+/**
+ * NextJS SSR function
+ *
+ * @export
+ * @param {GetServerSidePropsContext} context
+ * @return {*}
+ */
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { user } = await withUser(context);
+  return { props: { user } };
+}

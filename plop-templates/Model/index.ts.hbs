@@ -1,0 +1,19 @@
+interface {{pascalCase name}}Interface {
+  string_property: {S: string};
+  // number_property: {N: number};
+
+  // these properties will need further processing 
+  // map_property: {M: object};
+  // list_property: {L: Array};
+}
+
+/**
+ * Wrapper class for DynamoDB {{pascalCase name}} to Application {{pascalCase name}}
+ */
+export default class {{pascalCase name}} {
+  string_property: string;
+
+  constructor(data: {{pascalCase name}}Interface) {
+    this.string_property = data.string_property.S;
+  }
+}

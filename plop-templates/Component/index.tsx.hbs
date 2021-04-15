@@ -1,0 +1,55 @@
+import React, {useState, useEffect} from 'react';
+import {View, Text} from 'react-native';
+import dynamicStyles from './styles';
+import {useDynamicStyleSheet} from 'react-native-dark-mode';
+import {useNavigation} from '@react-navigation/native';
+import {useUserContext} from '../../contexts/UserContext';
+import { useLocalization } from '../../contexts/LocalizationContext';
+import Loading from '../Loading';
+
+export interface Props { }
+
+/**
+ * TODO: description
+ * {{pascalCase name}} is a component which...
+ */
+export default function {{pascalCase name}}(props: Props) {
+  // const navigation = useNavigation();
+  // const auth = useUserContext();
+  // const {t} = useLocalization();
+  const styles = useDynamicStyleSheet(dynamicStyles);
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<null | Error>(null);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // TODO this data fetching
+    // getData()
+    //   .then((newData) => setData(newData))
+    //   .catch((newError: Error) => setError(newError))
+    //   .finally(() => setLoading(false));
+  }, []);
+
+  // const handleEvent = () => console.log(`Handle me!`)
+
+  if (error) {
+    return (
+      <View style={[styles.container, styles.error]}>
+        <Text style={styles.text}>Error! {error.message}</Text>
+      </View>
+    );
+  }
+
+  if (loading) {
+    return (
+      <Loading/>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>{{pascalCase name}}</Text>
+    </View>
+  );
+}
